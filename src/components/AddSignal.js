@@ -12,7 +12,6 @@ import {
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
-const CheckboxGroup = Checkbox.Group;
 
 // used to filter signal (used for searching)
 function filter(inputValue, path) {
@@ -134,6 +133,7 @@ const AddSignal = () => {
             name="Add Signal"
             onFinish={onFinish}
             scrollToFirstError
+            style={{ padding: 24, minHeight: 360 }}
         >
             <Form.Item
                 name="Signal Name"
@@ -180,6 +180,19 @@ const AddSignal = () => {
                 </Select>
             </Form.Item>
             <Form.Item
+                name="Sum"
+                label="Sum"
+                tooltip="Select this if you would like to sum all the generations selected! (ardb signal only)"
+                rules={[
+                    {
+                        type: "array",
+                        // required: (selectedSignal.toString() === "ardb signals,ardb_daily"),
+                        message: "Please select the Generations(s) you want!",
+                    },
+                ]}>
+                <Checkbox disabled={!(selectedSignal.toString() === "ardb signals,ardb_daily")}></Checkbox>
+            </Form.Item>
+            <Form.Item
                 name="Generation"
                 label="Generation"
                 tooltip="Specify the Generations(s) you want! (ardb signal only)"
@@ -196,6 +209,13 @@ const AddSignal = () => {
                 </Checkbox>
                 <Checkbox.Group options={generations} value={checkedList} onChange={onChange} /> */}
                 <Checkbox.Group disabled={!(selectedSignal.toString() === "ardb signals,ardb_daily")}>
+                    <Row>
+                        <Col span={8}>
+                            <Checkbox value="All" style={{ lineHeight: '32px' }}>
+                                All
+                            </Checkbox>
+                        </Col>
+                    </Row>
                     <Row>
                         <Col span={8}>
                             <Checkbox value="A" style={{ lineHeight: '32px' }}>
