@@ -37,9 +37,42 @@ const signals = [
         value: "tt signals",
         label: "tt signals",
         children: [
-            { value: "panel1", label: "panel1", children: period },
-            { value: "panel2", label: "panel2", children: period },
-            { value: "panel3", label: "panel3", children: period },
+            {
+                value: "panel1", label: "panel1", children: [
+                    { value: "tt_panel1_daily", label: "tt_panel1_daily" },
+                    { value: "tt_panel1_daily", label: "tt_panel1_daily_yoy" },
+                    { value: "tt_panel1_weekly", label: "tt_panel1_weekly" },
+                    { value: "tt_panel1_weekly", label: "tt_panel1_weekly_yoy" },
+                    { value: "tt_panel1_monthly", label: "tt_panel1_monthly" },
+                    { value: "tt_panel1_monthly", label: "tt_panel1_monthly_yoy" },
+                    { value: "tt_panel1_quarterly", label: "tt_panel1_quarterly" },
+                    { value: "tt_panel1_quarterly", label: "tt_panel1_quarterly_yoy" },
+                ]
+            },
+            {
+                value: "panel2", label: "panel2", children: [
+                    { value: "tt_panel2_daily", label: "tt_panel2_daily" },
+                    { value: "tt_panel2_daily", label: "tt_panel2_daily_yoy" },
+                    { value: "tt_panel2_weekly", label: "tt_panel2_weekly" },
+                    { value: "tt_panel2_weekly", label: "tt_panel2_weekly_yoy" },
+                    { value: "tt_panel2_monthly", label: "tt_panel2_monthly" },
+                    { value: "tt_panel2_monthly", label: "tt_panel2_monthly_yoy" },
+                    { value: "tt_panel2_quarterly", label: "tt_panel2_quarterly" },
+                    { value: "tt_panel2_quarterly", label: "tt_panel2_quarterly_yoy" },
+                ]
+            },
+            {
+                value: "panel3", label: "panel3", children: [
+                    { value: "tt_panel3_daily", label: "tt_panel3_daily" },
+                    { value: "tt_panel3_daily", label: "tt_panel3_daily_yoy" },
+                    { value: "tt_panel3_weekly", label: "tt_panel3_weekly" },
+                    { value: "tt_panel3_weekly", label: "tt_panel3_weekly_yoy" },
+                    { value: "tt_panel3_monthly", label: "tt_panel3_monthly" },
+                    { value: "tt_panel3_monthly", label: "tt_panel3_monthly_yoy" },
+                    { value: "tt_panel3_quarterly", label: "tt_panel3_quarterly" },
+                    { value: "tt_panel3_quarterly", label: "tt_panel3_quarterly_yoy" },
+                ]
+            },
         ],
     },
     {
