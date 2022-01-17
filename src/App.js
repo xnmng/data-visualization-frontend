@@ -46,6 +46,26 @@ const mockData = [
     },
 ];
 
+const mockReturnData = [{
+    name: "GAMMA",
+    data: [
+        { x: new Date("2015-08-01").getTime(), y: 20 },
+        { x: new Date("2015-08-02").getTime(), y: 50 },
+        { x: new Date("2015-08-03").getTime(), y: 70 },
+        { x: new Date("2015-08-04").getTime(), y: 3.14 },
+        { x: new Date("2015-08-05").getTime(), y: 99.999 },
+    ],
+    tooltip: {
+        valueDecimals: 3,
+    },
+}]
+
+// todo replace with actual api call to backend to fetch data (data format as seen in mockReturnData)
+const mockAddFunction = () => {
+    return mockReturnData
+}
+
+
 const App = () => {
     const [collapsed, setCollapsed] = useState(false);
     const [window, setWindow] = useState("Add Signal");
