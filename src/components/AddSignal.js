@@ -1,263 +1,301 @@
 import React, { useState } from "react";
-import {
-    Form,
-    Cascader,
-    Select,
-    Checkbox,
-    Button,
-    DatePicker,
-    Row,
-    Col,
-} from "antd";
+import { Form, Cascader, Select, Button } from "antd";
 
-const { RangePicker } = DatePicker;
 const { Option } = Select;
+
+// todo replace with actual api call to backend to fetch data (data format as seen in mockReturnData)
+const mockReturnData = [
+  {
+    name: "GAMMA(ttsignal)",
+    data: [
+      { x: new Date("2015-08-01").getTime(), y: 20 },
+      { x: new Date("2015-08-02").getTime(), y: 50 },
+      { x: new Date("2015-08-03").getTime(), y: 70 },
+      { x: new Date("2015-08-04").getTime(), y: 3.14 },
+      { x: new Date("2015-08-05").getTime(), y: 99.999 },
+    ],
+    tooltip: {
+      valueDecimals: 3,
+    },
+  },
+];
+const mockAddFunction = () => {
+  return mockReturnData;
+};
 
 // used to filter signal (used for searching)
 function filter(inputValue, path) {
-    return path.some(
-        (option) =>
-            option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
-    );
+  return path.some(
+    (option) =>
+      option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
+  );
 }
 
 // user will select which signal to add from available options here
-const period = [
-    { value: "daily", label: "daily" },
-    { value: "daily", label: "daily_yoy" },
-    { value: "weekly", label: "weekly" },
-    { value: "weekly", label: "weekly_yoy" },
-    { value: "monthly", label: "monthly" },
-    { value: "monthly", label: "monthly_yoy" },
-    { value: "quarterly", label: "quarterly" },
-    { value: "quarterly", label: "quarterly_yoy" },
-];
 const signals = [
-    {
-        value: "tt signals",
-        label: "tt signals",
+  {
+    value: "tt signals",
+    label: "tt signals",
+    children: [
+      {
+        value: "panel1",
+        label: "panel1",
         children: [
-            { value: "panel1", label: "panel1", children: period },
-            { value: "panel2", label: "panel2", children: period },
-            { value: "panel3", label: "panel3", children: period },
+          { value: "tt_panel1_daily", label: "tt_panel1_daily" },
+          { value: "tt_panel1_daily_yoy", label: "tt_panel1_daily_yoy" },
+          { value: "tt_panel1_weekly", label: "tt_panel1_weekly" },
+          { value: "tt_panel1_weekly_yoy", label: "tt_panel1_weekly_yoy" },
+          { value: "tt_panel1_monthly", label: "tt_panel1_monthly" },
+          { value: "tt_panel1_monthly_yoy", label: "tt_panel1_monthly_yoy" },
+          { value: "tt_panel1_quarterly", label: "tt_panel1_quarterly" },
+          {
+            value: "tt_panel1_quarterly_yoy",
+            label: "tt_panel1_quarterly_yoy",
+          },
         ],
-    },
-    {
-        value: "ardb signals",
-        label: "ardb signals",
-        children: [{ value: "ardb_daily", label: "ardb_daily" }],
-    },
-    { value: "cets signals", label: "cets signals" },
-    { value: "edrp signals", label: "edrp signals" },
-    { value: "ttsub signals", label: "ttsub signals" },
-    { value: "ttvts signals", label: "ttvts signals" },
-    { value: "klpd signals", label: "klpd signals" },
-    { value: "atap signals", label: "atap signals" },
+      },
+      {
+        value: "panel2",
+        label: "panel2",
+        children: [
+          { value: "tt_panel1_daily", label: "tt_panel1_daily" },
+          { value: "tt_panel1_daily_yoy", label: "tt_panel1_daily_yoy" },
+          { value: "tt_panel1_weekly", label: "tt_panel1_weekly" },
+          { value: "tt_panel1_weekly_yoy", label: "tt_panel1_weekly_yoy" },
+          { value: "tt_panel1_monthly", label: "tt_panel1_monthly" },
+          { value: "tt_panel1_monthly_yoy", label: "tt_panel1_monthly_yoy" },
+          { value: "tt_panel1_quarterly", label: "tt_panel1_quarterly" },
+          {
+            value: "tt_panel1_quarterly_yoy",
+            label: "tt_panel1_quarterly_yoy",
+          },
+        ],
+      },
+      {
+        value: "panel3",
+        label: "panel3",
+        children: [
+          { value: "tt_panel1_daily", label: "tt_panel1_daily" },
+          { value: "tt_panel1_daily_yoy", label: "tt_panel1_daily_yoy" },
+          { value: "tt_panel1_weekly", label: "tt_panel1_weekly" },
+          { value: "tt_panel1_weekly_yoy", label: "tt_panel1_weekly_yoy" },
+          { value: "tt_panel1_monthly", label: "tt_panel1_monthly" },
+          { value: "tt_panel1_monthly_yoy", label: "tt_panel1_monthly_yoy" },
+          { value: "tt_panel1_quarterly", label: "tt_panel1_quarterly" },
+          {
+            value: "tt_panel1_quarterly_yoy",
+            label: "tt_panel1_quarterly_yoy",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    value: "ardb signals",
+    label: "ardb signals",
+    children: [{ value: "ardb_daily", label: "ardb_daily" }],
+  },
+  { value: "cets signals", label: "cets signals" },
+  { value: "edrp signals", label: "edrp signals" },
+  { value: "ttsub signals", label: "ttsub signals" },
+  { value: "ttvts signals", label: "ttvts signals" },
+  { value: "klpd signals", label: "klpd signals" },
+  { value: "atap signals", label: "atap signals" },
 ];
 
 // todo placeholder (signals); connect with backend/specify fixed values
 const tickers = [];
 for (let i = 10; i < 36; i++) {
-    tickers.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
+  tickers.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
 }
 
 // todo placeholder (generations; ardb only); connect with backend/specify fixed values
 const generations = [];
 for (let i = 1; i <= 10; i++) {
-    generations.push(i.toString());
+  generations.push(i.toString());
 }
 // const defaultCheckedList = [];
 
 const formItemLayout = {
-    labelCol: {
-        xs: {
-            span: 24,
-        },
-        sm: {
-            span: 8,
-        },
+  labelCol: {
+    xs: {
+      span: 24,
     },
-    wrapperCol: {
-        xs: {
-            span: 24,
-        },
-        sm: {
-            span: 16,
-        },
+    sm: {
+      span: 8,
     },
+  },
+  wrapperCol: {
+    xs: {
+      span: 24,
+    },
+    sm: {
+      span: 16,
+    },
+  },
 };
 const tailFormItemLayout = {
-    wrapperCol: {
-        xs: {
-            span: 24,
-            offset: 0,
-        },
-        sm: {
-            span: 16,
-            offset: 8,
-        },
+  wrapperCol: {
+    xs: {
+      span: 24,
+      offset: 0,
     },
+    sm: {
+      span: 16,
+      offset: 8,
+    },
+  },
 };
 
-const AddSignal = () => {
-    const [form] = Form.useForm();
+const AddSignal = ({ data, setData }) => {
+  const [form] = Form.useForm();
 
-    // todo placeholder (connect w backend)
-    const onFinish = (values) => {
-        console.log("Received values of form: ", values);
-    };
+  // todo placeholder (connect w backend)
+  const onFinish = (values) => {
+    console.log("Received values of form: ", values);
+    const response = mockAddFunction();
+    const newData = data.concat(response);
+    setData(newData);
+  };
 
-    // multiple selection (companies)
-    function handleChange(value) {
-        console.log(`selected ${value}`);
-    }
+  // multiple selection (companies)
+  function handleChange(value) {
+    console.log(`selected ${value}`);
+  }
 
-    const [checkedList, setCheckedList] = useState([]);
-    const [checkAll, setCheckAll] = useState(false);
-    const [selectedSignal, setSelectedSignal] = useState("");
+  const [selectedSignal, setSelectedSignal] = useState("");
 
-    const onChange = (list) => {
-        setCheckedList(list);
-        setCheckAll(list.length === generations.length);
-    };
-
-    const onCheckAllChange = (e) => {
-        setCheckedList(e.target.checked ? generations : []);
-        setCheckAll(e.target.checked);
-    };
-
-    return (
-        <Form
-            {...formItemLayout}
-            form={form}
-            name="Add Signal"
-            onFinish={onFinish}
-            scrollToFirstError
-            style={{ padding: 24, minHeight: 360 }}
+  return (
+    <Form
+      {...formItemLayout}
+      form={form}
+      name="Add Signal"
+      onFinish={onFinish}
+      scrollToFirstError
+      style={{ padding: 24, minHeight: 360 }}
+    >
+      <Form.Item
+        name="Name"
+        label="Signal Name"
+        tooltip="Specify a signal to add!"
+        rules={[
+          {
+            type: "array",
+            required: true,
+            message: "Please select a signal to add!",
+          },
+        ]}
+      >
+        <Cascader
+          options={signals}
+          showSearch={{ filter }}
+          onChange={(value) => {
+            setSelectedSignal(
+              value === undefined ? "" : value[value.length - 1]
+            );
+            console.log(value === undefined ? "" : value[value.length - 1]);
+          }}
+        />
+      </Form.Item>
+      {selectedSignal !== "" && (
+        <Form.Item
+          name="Ticker"
+          label="Ticker"
+          tooltip="Specify the ticker(s) you want!"
+          rules={[
+            {
+              type: "array",
+              required: true,
+              message: "Please select signals(s) you want!",
+            },
+          ]}
         >
-            <Form.Item
-                name="Signal Name"
-                label="Signal Name"
-                tooltip="Specify a signal to add!"
-                rules={[
-                    {
-                        type: "array",
-                        required: true,
-                        message: "Please select a signal to add!",
-                    },
-                ]}
-            >
-                <Cascader options={signals} showSearch={{ filter }} onChange={(value) => { setSelectedSignal(value); console.log(value.toString()) }} />
-            </Form.Item>
-            <Form.Item
-                name="range"
-                label="Date Range"
-                tooltip="Specify the start and end date you are interested in! (Optional field)"
-            >
-                <RangePicker />
-            </Form.Item>
-            <Form.Item
-                name="Ticker"
-                label="Ticker"
-                tooltip="Specify the ticker(s) you want!"
-                rules={[
-                    {
-                        type: "array",
-                        required: true,
-                        message: "Please select signals(s) you want!",
-                    },
-                ]}
-            >
-                <Select
-                    mode="multiple"
-                    allowClear
-                    style={{ width: '100%' }}
-                    placeholder="Please select a ticker(s)"
-                    // defaultValue={['a10', 'c12']}
-                    onChange={handleChange}
-                >
-                    {tickers}
-                </Select>
-            </Form.Item>
-            <Form.Item
-                name="Sum"
-                label="Sum"
-                tooltip="Select this if you would like to sum all the generations selected! (ardb signal only)"
-                rules={[
-                    {
-                        type: "array",
-                        // required: (selectedSignal.toString() === "ardb signals,ardb_daily"),
-                        message: "Please select the Generations(s) you want!",
-                    },
-                ]}>
-                <Checkbox disabled={!(selectedSignal.toString() === "ardb signals,ardb_daily")}></Checkbox>
-            </Form.Item>
-            <Form.Item
-                name="Generation"
-                label="Generation"
-                tooltip="Specify the Generations(s) you want! (ardb signal only)"
-                rules={[
-                    {
-                        type: "array",
-                        required: (selectedSignal.toString() === "ardb signals,ardb_daily"),
-                        message: "Please select the Generations(s) you want!",
-                    },
-                ]}
-            >
-                {/* <Checkbox onChange={onCheckAllChange} checked={checkAll}>
-                    Check all
-                </Checkbox>
-                <Checkbox.Group options={generations} value={checkedList} onChange={onChange} /> */}
-                <Checkbox.Group disabled={!(selectedSignal.toString() === "ardb signals,ardb_daily")}>
-                    <Row>
-                        <Col span={8}>
-                            <Checkbox value="All" style={{ lineHeight: '32px' }}>
-                                All
-                            </Checkbox>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={8}>
-                            <Checkbox value="A" style={{ lineHeight: '32px' }}>
-                                A
-                            </Checkbox>
-                        </Col>
-                        <Col span={8}>
-                            <Checkbox value="B" style={{ lineHeight: '32px' }}>
-                                B
-                            </Checkbox>
-                        </Col>
-                        <Col span={8}>
-                            <Checkbox value="C" style={{ lineHeight: '32px' }}>
-                                C
-                            </Checkbox>
-                        </Col>
-                        <Col span={8}>
-                            <Checkbox value="D" style={{ lineHeight: '32px' }}>
-                                D
-                            </Checkbox>
-                        </Col>
-                        <Col span={8}>
-                            <Checkbox value="E" style={{ lineHeight: '32px' }}>
-                                E
-                            </Checkbox>
-                        </Col>
-                        <Col span={8}>
-                            <Checkbox value="F" style={{ lineHeight: '32px' }}>
-                                F
-                            </Checkbox>
-                        </Col>
-                    </Row>
-                </Checkbox.Group>
-            </Form.Item>
-            <br />
-            <Form.Item {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit">
-                    Add
-                </Button>
-            </Form.Item>
-        </Form>
-    );
+          <Select
+            mode="multiple"
+            allowClear
+            style={{ width: "100%" }}
+            placeholder="Please select a ticker(s)"
+            // defaultValue={['a10', 'c12']}
+            onChange={handleChange}
+          >
+            {tickers}
+            {/* todo place mock api call here! */}
+          </Select>
+        </Form.Item>
+      )}
+      {selectedSignal === "ardb_daily" && (
+        <Form.Item
+          name="Merchant_ticker"
+          label="Merchant Ticker"
+          tooltip="Specify the merchant ticker(s) you want! (ardb signal only)"
+          rules={[
+            {
+              type: "array",
+              required:
+                selectedSignal !== undefined
+                  ? selectedSignal.toString() === "ardb_daily"
+                  : true,
+              message: "Please select merchant ticker(s) you want!",
+            },
+          ]}
+        >
+          <Select
+            mode="multiple"
+            allowClear
+            style={{ width: "100%" }}
+            placeholder="Please select a ticker(s)"
+            onChange={handleChange}
+            disabled={
+              selectedSignal !== undefined
+                ? selectedSignal.toString() !== "ardb_daily"
+                : true
+            }
+          >
+            {tickers}
+          </Select>
+        </Form.Item>
+      )}
+      {selectedSignal === "ardb_daily" && (
+        <Form.Item
+          name="Generation"
+          label="Generation"
+          tooltip="Specify the Generations(s) you want! (ardb signal only)"
+          rules={[
+            {
+              type: "array",
+              required:
+                selectedSignal !== undefined
+                  ? selectedSignal.toString() === "ardb_daily"
+                  : false,
+              message: "Please select the Generations(s) you want!",
+            },
+          ]}
+        >
+          <Select
+            mode="multiple"
+            allowClear
+            style={{ width: "100%" }}
+            placeholder="Please select a ticker(s)"
+            // defaultValue={['a10', 'c12']}
+            onChange={handleChange}
+            disabled={
+              selectedSignal !== undefined
+                ? selectedSignal.toString() !== "ardb_daily"
+                : true
+            }
+          >
+            {tickers}
+          </Select>
+        </Form.Item>
+      )}
+      <br />
+      <Form.Item {...tailFormItemLayout}>
+        <Button type="primary" htmlType="submit">
+          Add
+        </Button>
+      </Form.Item>
+    </Form>
+  );
 };
 
 export default AddSignal;
