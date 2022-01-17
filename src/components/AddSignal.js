@@ -3,6 +3,8 @@ import { Form, Cascader, Select, Button } from "antd";
 
 const { Option } = Select;
 
+// todo format object to match api calls
+
 // todo replace with actual api call to backend to fetch data (data format as seen in mockReturnData)
 const mockReturnData = [
   {
@@ -95,12 +97,64 @@ const signals = [
     label: "ardb signals",
     children: [{ value: "ardb_daily", label: "ardb_daily" }],
   },
-  { value: "cets signals", label: "cets signals" },
-  { value: "edrp signals", label: "edrp signals" },
-  { value: "ttsub signals", label: "ttsub signals" },
-  { value: "ttvts signals", label: "ttvts signals" },
-  { value: "klpd signals", label: "klpd signals" },
-  { value: "atap signals", label: "atap signals" },
+  {
+    value: "cets signals",
+    label: "cets signals",
+    children: [{ value: "cets_daily", label: "cets_daily" }],
+  },
+  {
+    value: "edrp signals",
+    label: "edrp signals",
+    children: [{ value: "edrp_daily", label: "edrp_daily" }],
+  },
+  {
+    value: "ttsub signals",
+    label: "ttsub signals",
+    children: [{ value: "ttsub_daily", label: "ttsub_daily" }],
+  },
+  {
+    value: "ttvts signals",
+    label: "ttvts signals",
+    children: [
+      { value: "ttvts_daily", label: "ttvts_daily" },
+      { value: "ttvts_weekly", label: "ttvts_weekly" },
+      { value: "ttvts_weekly_yoy", label: "ttvts_weekly_yoy" },
+      { value: "ttvts_monthly", label: "ttvts_monthly" },
+      { value: "ttvts_monthly_yoy", label: "ttvts_monthly_yoy" },
+      { value: "ttvts_quarterly", label: "ttvts_quarterly" },
+      {
+        value: "tt_quarterly_yoy",
+        label: "tt_quarterly_yoy",
+      },
+    ],
+  },
+  {
+    value: "klpd signals",
+    label: "klpd signals",
+    children: [{ value: "klpd_daily", label: "klpd_daily" }],
+  },
+  {
+    value: "atap signals",
+    label: "atap signals",
+    children: [
+      {
+        value: "atap_rank_google_play_daily",
+        label: "atap_rank_google_play_daily",
+      },
+      {
+        value: "atap_rank_itunes_connect_daily",
+        label: "atap_rank_itunes_connect_daily",
+      },
+      {
+        value: "atap_est_google_play_daily",
+        label: "atap_est_google_play_daily",
+      },
+      {
+        value: "atap_est_itunes_connect_daily",
+        label: "atap_est_itunes_connect_daily",
+      },
+    ],
+  },
 ];
 
 // todo placeholder (signals); connect with backend/specify fixed values
@@ -195,6 +249,7 @@ const AddSignal = ({ data, setData }) => {
             );
             console.log(value === undefined ? "" : value[value.length - 1]);
           }}
+          placeholder="Select a signal..."
         />
       </Form.Item>
       {selectedSignal !== "" && (
@@ -214,7 +269,7 @@ const AddSignal = ({ data, setData }) => {
             mode="multiple"
             allowClear
             style={{ width: "100%" }}
-            placeholder="Please select a ticker(s)"
+            placeholder="Select one or more options..."
             // defaultValue={['a10', 'c12']}
             onChange={handleChange}
           >
@@ -231,10 +286,7 @@ const AddSignal = ({ data, setData }) => {
           rules={[
             {
               type: "array",
-              required:
-                selectedSignal !== undefined
-                  ? selectedSignal.toString() === "ardb_daily"
-                  : true,
+              required: true,
               message: "Please select merchant ticker(s) you want!",
             },
           ]}
@@ -243,13 +295,8 @@ const AddSignal = ({ data, setData }) => {
             mode="multiple"
             allowClear
             style={{ width: "100%" }}
-            placeholder="Please select a ticker(s)"
+            placeholder="Select one or more options..."
             onChange={handleChange}
-            disabled={
-              selectedSignal !== undefined
-                ? selectedSignal.toString() !== "ardb_daily"
-                : true
-            }
           >
             {tickers}
           </Select>
@@ -263,10 +310,7 @@ const AddSignal = ({ data, setData }) => {
           rules={[
             {
               type: "array",
-              required:
-                selectedSignal !== undefined
-                  ? selectedSignal.toString() === "ardb_daily"
-                  : false,
+              required: true,
               message: "Please select the Generations(s) you want!",
             },
           ]}
@@ -275,7 +319,7 @@ const AddSignal = ({ data, setData }) => {
             mode="multiple"
             allowClear
             style={{ width: "100%" }}
-            placeholder="Please select a ticker(s)"
+            placeholder="Select one or more options..."
             // defaultValue={['a10', 'c12']}
             onChange={handleChange}
             disabled={
@@ -283,6 +327,30 @@ const AddSignal = ({ data, setData }) => {
                 ? selectedSignal.toString() !== "ardb_daily"
                 : true
             }
+          >
+            {tickers}
+          </Select>
+        </Form.Item>
+      )}
+      {selectedSignal === "edrp_daily" && (
+        <Form.Item
+          name="Merchant_name"
+          label="Merchant Name"
+          tooltip="Specify the merchant name(s) you want! (edrp signal only)"
+          rules={[
+            {
+              type: "array",
+              required: true,
+              message: "Please select merchant name(s) you want!",
+            },
+          ]}
+        >
+          <Select
+            mode="multiple"
+            allowClear
+            style={{ width: "100%" }}
+            placeholder="Select one or more options..."
+            onChange={handleChange}
           >
             {tickers}
           </Select>
