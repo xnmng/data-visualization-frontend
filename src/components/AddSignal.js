@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { Form, Cascader, Select, Button } from "antd";
 
+import ArdbOptions from "./ArdbOptions";
+import EdrpOptions from "./EdrpOptions";
+import TtsubOptions from "./TtsubOptions";
+
 const { Option } = Select;
 
 // todo format object to match api calls
@@ -60,16 +64,16 @@ const signals = [
         value: "panel2",
         label: "panel2",
         children: [
-          { value: "tt_panel1_daily", label: "tt_panel1_daily" },
-          { value: "tt_panel1_daily_yoy", label: "tt_panel1_daily_yoy" },
-          { value: "tt_panel1_weekly", label: "tt_panel1_weekly" },
-          { value: "tt_panel1_weekly_yoy", label: "tt_panel1_weekly_yoy" },
-          { value: "tt_panel1_monthly", label: "tt_panel1_monthly" },
-          { value: "tt_panel1_monthly_yoy", label: "tt_panel1_monthly_yoy" },
-          { value: "tt_panel1_quarterly", label: "tt_panel1_quarterly" },
+          { value: "tt_panel2_daily", label: "tt_panel2_daily" },
+          { value: "tt_panel2_daily_yoy", label: "tt_panel2_daily_yoy" },
+          { value: "tt_panel2_weekly", label: "tt_panel2_weekly" },
+          { value: "tt_panel2_weekly_yoy", label: "tt_panel2_weekly_yoy" },
+          { value: "tt_panel2_monthly", label: "tt_panel2_monthly" },
+          { value: "tt_panel2_monthly_yoy", label: "tt_panel2_monthly_yoy" },
+          { value: "tt_panel2_quarterly", label: "tt_panel2_quarterly" },
           {
-            value: "tt_panel1_quarterly_yoy",
-            label: "tt_panel1_quarterly_yoy",
+            value: "tt_panel2_quarterly_yoy",
+            label: "tt_panel2_quarterly_yoy",
           },
         ],
       },
@@ -77,16 +81,16 @@ const signals = [
         value: "panel3",
         label: "panel3",
         children: [
-          { value: "tt_panel1_daily", label: "tt_panel1_daily" },
-          { value: "tt_panel1_daily_yoy", label: "tt_panel1_daily_yoy" },
-          { value: "tt_panel1_weekly", label: "tt_panel1_weekly" },
-          { value: "tt_panel1_weekly_yoy", label: "tt_panel1_weekly_yoy" },
-          { value: "tt_panel1_monthly", label: "tt_panel1_monthly" },
-          { value: "tt_panel1_monthly_yoy", label: "tt_panel1_monthly_yoy" },
-          { value: "tt_panel1_quarterly", label: "tt_panel1_quarterly" },
+          { value: "tt_panel3_daily", label: "tt_panel3_daily" },
+          { value: "tt_panel3_daily_yoy", label: "tt_panel3_daily_yoy" },
+          { value: "tt_panel3_weekly", label: "tt_panel3_weekly" },
+          { value: "tt_panel3_weekly_yoy", label: "tt_panel3_weekly_yoy" },
+          { value: "tt_panel3_monthly", label: "tt_panel3_monthly" },
+          { value: "tt_panel3_monthly_yoy", label: "tt_panel3_monthly_yoy" },
+          { value: "tt_panel3_quarterly", label: "tt_panel3_quarterly" },
           {
-            value: "tt_panel1_quarterly_yoy",
-            label: "tt_panel1_quarterly_yoy",
+            value: "tt_panel3_quarterly_yoy",
+            label: "tt_panel3_quarterly_yoy",
           },
         ],
       },
@@ -279,82 +283,17 @@ const AddSignal = ({ data, setData }) => {
         </Form.Item>
       )}
       {selectedSignal === "ardb_daily" && (
-        <Form.Item
-          name="Merchant_ticker"
-          label="Merchant Ticker"
-          tooltip="Specify the merchant ticker(s) you want! (ardb signal only)"
-          rules={[
-            {
-              type: "array",
-              required: true,
-              message: "Please select merchant ticker(s) you want!",
-            },
-          ]}
-        >
-          <Select
-            mode="multiple"
-            allowClear
-            style={{ width: "100%" }}
-            placeholder="Select one or more options..."
-            onChange={handleChange}
-          >
-            {tickers}
-          </Select>
-        </Form.Item>
-      )}
-      {selectedSignal === "ardb_daily" && (
-        <Form.Item
-          name="Generation"
-          label="Generation"
-          tooltip="Specify the Generations(s) you want! (ardb signal only)"
-          rules={[
-            {
-              type: "array",
-              required: true,
-              message: "Please select the Generations(s) you want!",
-            },
-          ]}
-        >
-          <Select
-            mode="multiple"
-            allowClear
-            style={{ width: "100%" }}
-            placeholder="Select one or more options..."
-            // defaultValue={['a10', 'c12']}
-            onChange={handleChange}
-            disabled={
-              selectedSignal !== undefined
-                ? selectedSignal.toString() !== "ardb_daily"
-                : true
-            }
-          >
-            {tickers}
-          </Select>
-        </Form.Item>
+        <ArdbOptions
+          tickers={tickers}
+          handleChange={handleChange}
+          selectedSignal={selectedSignal}
+        />
       )}
       {selectedSignal === "edrp_daily" && (
-        <Form.Item
-          name="Merchant_name"
-          label="Merchant Name"
-          tooltip="Specify the merchant name(s) you want! (edrp signal only)"
-          rules={[
-            {
-              type: "array",
-              required: true,
-              message: "Please select merchant name(s) you want!",
-            },
-          ]}
-        >
-          <Select
-            mode="multiple"
-            allowClear
-            style={{ width: "100%" }}
-            placeholder="Select one or more options..."
-            onChange={handleChange}
-          >
-            {tickers}
-          </Select>
-        </Form.Item>
+        <EdrpOptions tickers={tickers} handleChange={handleChange} />
+      )}
+      {selectedSignal === "ttsub_daily" && (
+        <TtsubOptions tickers={tickers} handleChange={handleChange} />
       )}
       <br />
       <Form.Item {...tailFormItemLayout}>
