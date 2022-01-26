@@ -1,21 +1,21 @@
 const mockSignalSchema = [
   {
-    name: "tt",
+    signal: "tt",
     sub_signal: "tt_panel1_daily",
     ticker: ["tt_panel1_daily1", "tt_panel1_daily2", "tt_panel1_daily3"],
   },
   {
-    name: "tt",
+    signal: "tt",
     sub_signal: "tt_panel2_daily",
     ticker: ["tt_panel2_daily1", "tt_panel2_daily2", "tt_panel2_daily3"],
   },
   {
-    name: "tt",
+    signal: "tt",
     sub_signal: "tt_panel3_daily",
     ticker: ["tt_panel3_daily1", "tt_panel3_daily2", "tt_panel3_daily3"],
   },
   {
-    name: "tt",
+    signal: "tt",
     sub_signal: "tt_panel1_daily_yoy",
     ticker: [
       "tt_panel1_daily_yoy1",
@@ -24,7 +24,7 @@ const mockSignalSchema = [
     ],
   },
   {
-    name: "tt",
+    signal: "tt",
     sub_signal: "tt_panel2_daily_yoy",
     ticker: [
       "tt_panel2_daily_yoy1",
@@ -33,7 +33,7 @@ const mockSignalSchema = [
     ],
   },
   {
-    name: "tt",
+    signal: "tt",
     sub_signal: "tt_panel3_daily_yoy",
     ticker: [
       "tt_panel3_daily_yoy1",
@@ -43,22 +43,22 @@ const mockSignalSchema = [
   },
 
   {
-    name: "tt",
+    signal: "tt",
     sub_signal: "tt_panel1_weekly",
     ticker: ["tt_panel1_weekly1", "tt_panel1_weekly2", "tt_panel1_weekly3"],
   },
   {
-    name: "tt",
+    signal: "tt",
     sub_signal: "tt_panel2_weekly",
     ticker: ["tt_panel2_weekly1", "tt_panel2_weekly2", "tt_panel2_weekly3"],
   },
   {
-    name: "tt",
+    signal: "tt",
     sub_signal: "tt_panel3_weekly",
     ticker: ["tt_panel3_weekly1", "tt_panel3_weekly2", "tt_panel3_weekly3"],
   },
   {
-    name: "tt",
+    signal: "tt",
     sub_signal: "tt_panel1_weekly_yoy",
     ticker: [
       "tt_panel1_weekly_yoy1",
@@ -67,7 +67,7 @@ const mockSignalSchema = [
     ],
   },
   {
-    name: "tt",
+    signal: "tt",
     sub_signal: "tt_panel2_weekly_yoy",
     ticker: [
       "tt_panel2_weekly_yoy1",
@@ -76,7 +76,7 @@ const mockSignalSchema = [
     ],
   },
   {
-    name: "tt",
+    signal: "tt",
     sub_signal: "tt_panel3_weekly_yoy",
     ticker: [
       "tt_panel3_weekly_yoy1",
@@ -86,22 +86,22 @@ const mockSignalSchema = [
   },
 
   {
-    name: "tt",
+    signal: "tt",
     sub_signal: "tt_panel1_monthly",
     ticker: ["tt_panel1_monthly1", "tt_panel1_monthly2", "tt_panel1_monthly3"],
   },
   {
-    name: "tt",
+    signal: "tt",
     sub_signal: "tt_panel2_monthly",
     ticker: ["tt_panel2_monthly1", "tt_panel2_monthly2", "tt_panel2_monthly3"],
   },
   {
-    name: "tt",
+    signal: "tt",
     sub_signal: "tt_panel3_monthly",
     ticker: ["tt_panel3_monthly1", "tt_panel3_monthly2", "tt_panel3_monthly3"],
   },
   {
-    name: "tt",
+    signal: "tt",
     sub_signal: "tt_panel1_monthly_yoy",
     ticker: [
       "tt_panel1_monthly_yoy1",
@@ -110,7 +110,7 @@ const mockSignalSchema = [
     ],
   },
   {
-    name: "tt",
+    signal: "tt",
     sub_signal: "tt_panel2_monthly_yoy",
     ticker: [
       "tt_panel2_monthly_yoy1",
@@ -119,7 +119,7 @@ const mockSignalSchema = [
     ],
   },
   {
-    name: "tt",
+    signal: "tt",
     sub_signal: "tt_panel3_monthly_yoy",
     ticker: [
       "tt_panel3_monthly_yoy1",
@@ -128,7 +128,7 @@ const mockSignalSchema = [
     ],
   },
   {
-    name: "tt",
+    signal: "tt",
     sub_signal: "tt_panel1_quarterly",
     ticker: [
       "tt_panel1_quarterly1",
@@ -137,7 +137,7 @@ const mockSignalSchema = [
     ],
   },
   {
-    name: "tt",
+    signal: "tt",
     sub_signal: "tt_panel2_quarterly",
     ticker: [
       "tt_panel2_quarterly1",
@@ -146,7 +146,7 @@ const mockSignalSchema = [
     ],
   },
   {
-    name: "tt",
+    signal: "tt",
     sub_signal: "tt_panel3_quarterly",
     ticker: [
       "tt_panel3_quarterly1",
@@ -155,7 +155,7 @@ const mockSignalSchema = [
     ],
   },
   {
-    name: "tt",
+    signal: "tt",
     sub_signal: "tt_panel1_quarterly_yoy",
     ticker: [
       "tt_panel1_quarterly_yoy1",
@@ -164,7 +164,7 @@ const mockSignalSchema = [
     ],
   },
   {
-    name: "tt",
+    signal: "tt",
     sub_signal: "tt_panel2_quarterly_yoy",
     ticker: [
       "tt_panel2_quarterly_yoy1",
@@ -173,7 +173,7 @@ const mockSignalSchema = [
     ],
   },
   {
-    name: "tt",
+    signal: "tt",
     sub_signal: "tt_panel3_quarterly_yoy",
     ticker: [
       "tt_panel3_quarterly_yoy1",
@@ -182,7 +182,7 @@ const mockSignalSchema = [
     ],
   },
   {
-    name: "ardb",
+    signal: "ardb",
     sub_signal: "ardb_daily",
     ticker: ["ardb_daily1", "ardb_daily2", "ardb_daily3"],
     merchant_ticker: ["ardb_ticker1", "ardb_ticker2", "ardb_ticker3"],
@@ -195,12 +195,12 @@ const mockSignalSchema = [
     ],
   },
   {
-    name: "cets",
+    signal: "cets",
     sub_signal: "cets_daily",
     ticker: ["cets_daily1", "cets_daily2", "cets_daily3"],
   },
   {
-    name: "edrp",
+    signal: "edrp",
     sub_signal: "edrp_daily",
     ticker: ["edrp_daily1", "edrp_daily2", "edrp_daily3"],
     merchant_sub_signal: [
@@ -210,7 +210,7 @@ const mockSignalSchema = [
     ],
   },
   {
-    name: "ttsub",
+    signal: "ttsub",
     sub_signal: "ttsub_daily",
     ticker: ["ttsub_daily1", "ttsub_daily2", "ttsub_daily3"],
     gender: ["gender1", "gender2", "gender3"],
@@ -221,37 +221,37 @@ const mockSignalSchema = [
     cbsa_trans: ["cbsa_trans1", "cbsa_trans2", "cbsa_trans3"],
   },
   {
-    name: "ttvts",
+    signal: "ttvts",
     sub_signal: "ttvts_daily",
     ticker: ["ttvts_daily1", "ttvts_daily2", "ttvts_daily3"],
   },
   {
-    name: "ttvts",
+    signal: "ttvts",
     sub_signal: "ttvts_weekly",
     ticker: ["ttvts_weekly1", "ttvts_weekly2", "ttvts_weekly3"],
   },
   {
-    name: "ttvts",
+    signal: "ttvts",
     sub_signal: "ttvts_weekly_yoy",
     ticker: ["ttvts_weekly_yoy1", "ttvts_weekly_yoy2", "ttvts_weekly_yoy3"],
   },
   {
-    name: "ttvts",
+    signal: "ttvts",
     sub_signal: "ttvts_monthly",
     ticker: ["ttvts_monthly1", "ttvts_monthly2", "ttvts_monthly3"],
   },
   {
-    name: "ttvts",
+    signal: "ttvts",
     sub_signal: "ttvts_monthly_yoy",
     ticker: ["ttvts_monthly_yoy1", "ttvts_monthly_yoy2", "ttvts_monthly_yoy3"],
   },
   {
-    name: "ttvts",
+    signal: "ttvts",
     sub_signal: "ttvts_quarterly",
     ticker: ["ttvts_quarterly1", "ttvts_quarterly2", "ttvts_quarterly3"],
   },
   {
-    name: "ttvts",
+    signal: "ttvts",
     sub_signal: "ttvts_quarterly_yoy",
     ticker: [
       "ttvts_quarterly_yoy1",
@@ -260,12 +260,12 @@ const mockSignalSchema = [
     ],
   },
   {
-    name: "klpd",
+    signal: "klpd",
     sub_signal: "klpd_daily",
     ticker: ["klpd_daily1", "klpd_daily2", "klpd_daily3"],
   },
   {
-    name: "atap",
+    signal: "atap",
     sub_signal: "atap_rank_google_play_daily",
     ticker: [
       "atap_rank_google_play_daily1",
@@ -274,7 +274,7 @@ const mockSignalSchema = [
     ],
   },
   {
-    name: "atap",
+    signal: "atap",
     sub_signal: "atap_rank_itunes_connect_daily",
     ticker: [
       "atap_rank_itunes_connect_daily1",
@@ -283,7 +283,7 @@ const mockSignalSchema = [
     ],
   },
   {
-    name: "atap",
+    signal: "atap",
     sub_signal: "atap_est_google_play_daily",
     ticker: [
       "atap_est_google_play_daily1",
@@ -292,7 +292,7 @@ const mockSignalSchema = [
     ],
   },
   {
-    name: "atap",
+    signal: "atap",
     sub_signal: "atap_est_itunes_connect_daily",
     ticker: [
       "atap_est_itunes_connect_daily1",
