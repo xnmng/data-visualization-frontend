@@ -1,33 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Cascader, Select, Button } from "antd";
 
 import ArdbOptions from "./ArdbOptions";
 import EdrpOptions from "./EdrpOptions";
 import TtsubOptions from "./TtsubOptions";
+import TickerOptions from "./TickerOptions";
+
+import oldMockGetSignalSchema from "./oldMockGetSignalSchema";
 
 const { Option } = Select;
 
-// todo format object to match api calls
-
-// todo replace with actual api call to backend to fetch data (data format as seen in mockReturnData)
-const mockReturnData = [
-  {
-    name: "GAMMA(ttsignal)",
-    data: [
-      { x: new Date("2015-08-01").getTime(), y: 20 },
-      { x: new Date("2015-08-02").getTime(), y: 50 },
-      { x: new Date("2015-08-03").getTime(), y: 70 },
-      { x: new Date("2015-08-04").getTime(), y: 3.14 },
-      { x: new Date("2015-08-05").getTime(), y: 99.999 },
-    ],
-    tooltip: {
-      valueDecimals: 3,
-    },
+// todo mock function; replace with actual API endpoint
+const mockReturnData = {
+  name: "GAMMA(ttsignal)", //todo refactor to support title as opposed to name
+  data: [
+    { x: new Date("2015-08-01").getTime(), y: 20 },
+    { x: new Date("2015-08-02").getTime(), y: 50 },
+    { x: new Date("2015-08-03").getTime(), y: 70 },
+    { x: new Date("2015-08-04").getTime(), y: 3.14 },
+    { x: new Date("2015-08-05").getTime(), y: 99.999 },
+  ],
+  tooltip: {
+    valueDecimals: 3,
   },
-];
-const mockAddFunction = () => {
-  return mockReturnData;
 };
+
+function mockGetPlotQuery() {
+  return mockReturnData;
+}
+
+// todo placeholder (signals); connect with backend/specify fixed values
+const tickers = [];
+for (let i = 10; i < 36; i++) {
+  tickers.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
+}
 
 // used to filter signal (used for searching)
 function filter(inputValue, path) {
@@ -161,19 +167,6 @@ const signals = [
   },
 ];
 
-// todo placeholder (signals); connect with backend/specify fixed values
-const tickers = [];
-for (let i = 10; i < 36; i++) {
-  tickers.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
-}
-
-// todo placeholder (generations; ardb only); connect with backend/specify fixed values
-const generations = [];
-for (let i = 1; i <= 10; i++) {
-  generations.push(i.toString());
-}
-// const defaultCheckedList = [];
-
 const formItemLayout = {
   labelCol: {
     xs: {
@@ -210,8 +203,14 @@ const AddSignal = ({ data, setData }) => {
 
   // todo placeholder (connect w backend)
   const onFinish = (values) => {
-    console.log("Received values of form: ", values);
-    const response = mockAddFunction();
+    console.log("Received values of form: ");
+    console.log(values);
+
+    // processing response
+    const response = mockGetPlotQuery();
+    response.name = response.title;
+    delete response.title;
+
     const newData = data.concat(response);
     setData(newData);
   };
@@ -221,7 +220,33 @@ const AddSignal = ({ data, setData }) => {
     console.log(`selected ${value}`);
   }
 
+  useEffect(() => {
+    async function getSignalSchema() {
+      setIsLoading(true);
+      let responsePromise = oldMockGetSignalSchema();
+      let response = await responsePromise;
+      let schema = {};
+      response.forEach((e) => {
+        const obj = e.fields; // fields object
+        const newObj = {};
+        for (const [key, value] of Object.entries(obj)) {
+          // key: name of field, value: content (Array)
+          let optionArr = [];
+          value.forEach((v) => {
+            optionArr.push(<Option key={v}>{v}</Option>);
+          });
+          newObj[key] = optionArr;
+        }
+        schema[e.name] = newObj;
+      });
+      setSignalSchema(schema);
+      setIsLoading(false);
+    }
+    getSignalSchema();
+  }, []);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedSignal, setSelectedSignal] = useState("");
+  const [signalSchema, setSignalSchema] = useState([]);
 
   return (
     <Form
@@ -232,6 +257,7 @@ const AddSignal = ({ data, setData }) => {
       scrollToFirstError
       style={{ padding: 24, minHeight: 360 }}
     >
+      {isLoading && <div>loading...</div>}
       <Form.Item
         name="Name"
         label="Signal Name"
@@ -248,52 +274,40 @@ const AddSignal = ({ data, setData }) => {
           options={signals}
           showSearch={{ filter }}
           onChange={(value) => {
-            setSelectedSignal(
-              value === undefined ? "" : value[value.length - 1]
-            );
-            console.log(value === undefined ? "" : value[value.length - 1]);
+            const signal = value === undefined ? "" : value[value.length - 1];
+            setSelectedSignal(signal);
           }}
           placeholder="Select a signal..."
+          disabled={isLoading}
         />
       </Form.Item>
       {selectedSignal !== "" && (
-        <Form.Item
-          name="Ticker"
-          label="Ticker"
-          tooltip="Specify the ticker(s) you want!"
-          rules={[
-            {
-              type: "array",
-              required: true,
-              message: "Please select signals(s) you want!",
-            },
-          ]}
-        >
-          <Select
-            mode="multiple"
-            allowClear
-            style={{ width: "100%" }}
-            placeholder="Select one or more options..."
-            // defaultValue={['a10', 'c12']}
-            onChange={handleChange}
-          >
-            {tickers}
-            {/* todo place mock api call here! */}
-          </Select>
-        </Form.Item>
+        <TickerOptions
+          handleChange={handleChange}
+          selectedSignal={selectedSignal}
+          signalSchema={signalSchema}
+        />
       )}
       {selectedSignal === "ardb_daily" && (
         <ArdbOptions
-          tickers={tickers}
           handleChange={handleChange}
           selectedSignal={selectedSignal}
+          signalSchema={signalSchema}
         />
       )}
       {selectedSignal === "edrp_daily" && (
-        <EdrpOptions tickers={tickers} handleChange={handleChange} />
+        <EdrpOptions
+          selectedSignal={selectedSignal}
+          signalSchema={signalSchema}
+          handleChange={handleChange}
+        />
       )}
       {selectedSignal === "ttsub_daily" && (
-        <TtsubOptions tickers={tickers} handleChange={handleChange} />
+        <TtsubOptions
+          selectedSignal={selectedSignal}
+          signalSchema={signalSchema}
+          handleChange={handleChange}
+        />
       )}
       <br />
       <Form.Item {...tailFormItemLayout}>

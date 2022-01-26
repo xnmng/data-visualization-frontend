@@ -1,16 +1,16 @@
 import { Form, Select } from "antd";
 
-function EdrpOptions({ handleChange, selectedSignal, signalSchema }) {
+function TickerOptions({ handleChange, selectedSignal, signalSchema }) {
   return (
     <Form.Item
-      name="Merchant_name"
-      label="Merchant Name"
-      tooltip="Specify the merchant name(s) you want! (edrp signal only)"
+      name="Ticker"
+      label="Ticker"
+      tooltip="Specify the ticker(s) you want!"
       rules={[
         {
           type: "array",
           required: true,
-          message: "Please select merchant name(s) you want!",
+          message: "Please select signals(s) you want!",
         },
       ]}
     >
@@ -19,12 +19,13 @@ function EdrpOptions({ handleChange, selectedSignal, signalSchema }) {
         allowClear
         style={{ width: "100%" }}
         placeholder="Select one or more options..."
+        // defaultValue={['a10', 'c12']}
         onChange={handleChange}
       >
-        {signalSchema[selectedSignal].merchant_name}
+        {signalSchema[selectedSignal].ticker} // todo fix this
       </Select>
     </Form.Item>
   );
 }
 
-export default EdrpOptions;
+export default TickerOptions;

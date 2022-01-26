@@ -1,6 +1,6 @@
 import { Form, Select } from "antd";
 
-function ArdbOptions({ handleChange, tickers }) {
+function ArdbOptions({ handleChange, selectedSignal, signalSchema }) {
   return (
     <div>
       <Form.Item
@@ -22,7 +22,7 @@ function ArdbOptions({ handleChange, tickers }) {
           placeholder="Select one or more options..."
           onChange={handleChange}
         >
-          {tickers}
+          {signalSchema[selectedSignal].merchant_ticker}
         </Select>
       </Form.Item>
       <Form.Item
@@ -45,7 +45,7 @@ function ArdbOptions({ handleChange, tickers }) {
           // defaultValue={['a10', 'c12']}
           onChange={handleChange}
         >
-          {tickers}
+          {signalSchema[selectedSignal].generation}
         </Select>
       </Form.Item>
     </div>

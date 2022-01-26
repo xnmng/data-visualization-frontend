@@ -1,6 +1,6 @@
 import { Form, Select } from "antd";
 
-function TtsubOptions({ handleChange, tickers }) {
+function TtsubOptions({ handleChange, selectedSignal, signalSchema }) {
   return (
     <div>
       <Form.Item
@@ -22,7 +22,7 @@ function TtsubOptions({ handleChange, tickers }) {
           placeholder="Select one or more options..."
           onChange={handleChange}
         >
-          {tickers}
+          {signalSchema[selectedSignal].gender}
         </Select>
       </Form.Item>
       <Form.Item
@@ -44,7 +44,7 @@ function TtsubOptions({ handleChange, tickers }) {
           placeholder="Select one or more options..."
           onChange={handleChange}
         >
-          {tickers}
+          {signalSchema[selectedSignal].birth_year}
         </Select>
       </Form.Item>
       <Form.Item
@@ -66,7 +66,7 @@ function TtsubOptions({ handleChange, tickers }) {
           placeholder="Select one or more options..."
           onChange={handleChange}
         >
-          {tickers}
+          {signalSchema[selectedSignal].city_trans}
         </Select>
       </Form.Item>
       <Form.Item
@@ -88,7 +88,7 @@ function TtsubOptions({ handleChange, tickers }) {
           placeholder="Select one or more options..."
           onChange={handleChange}
         >
-          {tickers}
+          {signalSchema[selectedSignal].state_trans}
         </Select>
       </Form.Item>
       <Form.Item
@@ -110,7 +110,7 @@ function TtsubOptions({ handleChange, tickers }) {
           placeholder="Select one or more options..."
           onChange={handleChange}
         >
-          {tickers}
+          {signalSchema[selectedSignal].msa_trans}
         </Select>
       </Form.Item>
       <Form.Item
@@ -132,7 +132,7 @@ function TtsubOptions({ handleChange, tickers }) {
           placeholder="Select one or more options..."
           onChange={handleChange}
         >
-          {tickers}
+          {signalSchema[selectedSignal].cbsa_trans}
         </Select>
       </Form.Item>
     </div>
