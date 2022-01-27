@@ -1,17 +1,7 @@
 import React, { useState, useEffect } from "react";
-import {
-  Form,
-  Input,
-  InputNumber,
-  Cascader,
-  Select,
-  Row,
-  Col,
-  Checkbox,
-  Button,
-  AutoComplete,
-} from "antd";
+import { Form, Select, Button } from "antd";
 import mockGetSignalSchema from "./mockGetSignalSchema";
+import OptionalOptions from "./OptionalOptions";
 const { Option } = Select;
 const residences = [
   {
@@ -114,6 +104,8 @@ const AddSignal = () => {
   const [signals, setSignals] = useState([]);
   const [signalsMap, setSignalsMap] = useState({});
   const [fields, setFields] = useState({});
+  const [selectedSignal, setSelectedSignal] = useState("");
+  const [selectedSubsignal, setSelectedSubsignal] = useState("");
 
   const onWebsiteChange = (value) => {
     if (!value) {
@@ -135,10 +127,11 @@ const AddSignal = () => {
       setIsLoading(true);
       let responsePromise = mockGetSignalSchema();
       let response = await responsePromise;
-      let s = []; // signals
-      let ss = {}; // signalsMap
-      let f = {}; // fields
+      let s = []; // signals (number of possible signals user can choose)
+      let ss = {}; // signalsMap (given a signal what are the possible subsignals)
+      let f = {}; // fields (given a subsignal what form items do we need to render)
       response.forEach((obj) => {
+        // each obj represents a subsignal and its available fields
         if (obj.signal in ss) {
           ss[obj.signal].push(
             <Option key={obj.sub_signal} value={obj.sub_signal}>
@@ -152,12 +145,34 @@ const AddSignal = () => {
             </Option>,
           ];
         }
-        const sub = obj.sub_signal;
+        const sub = obj.sub_signal; // store the subsignal's name before deleting it
         const cpy = obj;
         delete cpy.signal;
         delete cpy.sub_signal;
-        f[sub] = cpy;
+        const formItems = []; // an array of <form.item>
+        f[sub] = formItems; // key: subsignal name, value: array of <Form.Item> objects to display
+
+        for (const [key, value] of Object.entries(cpy)) {
+          // (for a given subsignal) iterate through its fields
+          const options = [];
+          console.log(value);
+          value.forEach((v) => {
+            // create the options for each given field
+            console.log(v);
+            options.push(
+              <Option key={v} value={v}>
+                {v}
+              </Option>
+            );
+          });
+          formItems.push(
+            <Form.Item name={key} label={key}>
+              <Select>{options}</Select>
+            </Form.Item>
+          );
+        }
       });
+
       for (const signal of Object.keys(ss)) {
         s.push(
           <Option key={signal} value={signal}>
@@ -177,228 +192,11 @@ const AddSignal = () => {
     <Form
       {...formItemLayout}
       form={form}
-      name="register"
+      name="add signal"
       onFinish={onFinish}
-      initialValues={{
-        residence: ["zhejiang", "hangzhou", "xihu"],
-        prefix: "86",
-      }}
       scrollToFirstError
     >
-      <Form.Item
-        name="email"
-        label="E-mail"
-        rules={[
-          {
-            type: "email",
-            message: "The input is not valid E-mail!",
-          },
-          {
-            required: true,
-            message: "Please input your E-mail!",
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-
-      <Form.Item
-        name="password"
-        label="Password"
-        rules={[
-          {
-            required: true,
-            message: "Please input your password!",
-          },
-        ]}
-        hasFeedback
-      >
-        <Input.Password />
-      </Form.Item>
-
-      <Form.Item
-        name="confirm"
-        label="Confirm Password"
-        dependencies={["password"]}
-        hasFeedback
-        rules={[
-          {
-            required: true,
-            message: "Please confirm your password!",
-          },
-          ({ getFieldValue }) => ({
-            validator(_, value) {
-              if (!value || getFieldValue("password") === value) {
-                return Promise.resolve();
-              }
-
-              return Promise.reject(
-                new Error("The two passwords that you entered do not match!")
-              );
-            },
-          }),
-        ]}
-      >
-        <Input.Password />
-      </Form.Item>
-
-      <Form.Item
-        name="nickname"
-        label="Nickname"
-        tooltip="What do you want others to call you?"
-        rules={[
-          {
-            required: true,
-            message: "Please input your nickname!",
-            whitespace: true,
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-
-      <Form.Item
-        name="residence"
-        label="Habitual Residence"
-        rules={[
-          {
-            type: "array",
-            required: true,
-            message: "Please select your habitual residence!",
-          },
-        ]}
-      >
-        <Cascader options={residences} />
-      </Form.Item>
-
-      <Form.Item
-        name="phone"
-        label="Phone Number"
-        rules={[
-          {
-            required: true,
-            message: "Please input your phone number!",
-          },
-        ]}
-      >
-        <Input
-          addonBefore={prefixSelector}
-          style={{
-            width: "100%",
-          }}
-        />
-      </Form.Item>
-
-      <Form.Item
-        name="donation"
-        label="Donation"
-        rules={[
-          {
-            required: true,
-            message: "Please input donation amount!",
-          },
-        ]}
-      >
-        <InputNumber
-          addonAfter={suffixSelector}
-          style={{
-            width: "100%",
-          }}
-        />
-      </Form.Item>
-
-      <Form.Item
-        name="website"
-        label="Website"
-        rules={[
-          {
-            required: true,
-            message: "Please input website!",
-          },
-        ]}
-      >
-        <AutoComplete
-          options={websiteOptions}
-          onChange={onWebsiteChange}
-          placeholder="website"
-        >
-          <Input />
-        </AutoComplete>
-      </Form.Item>
-
-      <Form.Item
-        name="intro"
-        label="Intro"
-        rules={[
-          {
-            required: true,
-            message: "Please input Intro",
-          },
-        ]}
-      >
-        <Input.TextArea showCount maxLength={100} />
-      </Form.Item>
-
-      <Form.Item
-        name="gender"
-        label="Gender"
-        rules={[
-          {
-            required: true,
-            message: "Please select gender!",
-          },
-        ]}
-      >
-        <Select placeholder="select your gender">
-          <Option value="male">Male</Option>
-          <Option value="female">Female</Option>
-          <Option value="other">Other</Option>
-        </Select>
-      </Form.Item>
-
-      <Form.Item
-        label="Captcha"
-        extra="We must make sure that your are a human."
-      >
-        <Row gutter={8}>
-          <Col span={12}>
-            <Form.Item
-              name="captcha"
-              noStyle
-              rules={[
-                {
-                  required: true,
-                  message: "Please input the captcha you got!",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Button>Get captcha</Button>
-          </Col>
-        </Row>
-      </Form.Item>
-
-      <Form.Item
-        name="agreement"
-        valuePropName="checked"
-        rules={[
-          {
-            validator: (_, value) =>
-              value
-                ? Promise.resolve()
-                : Promise.reject(new Error("Should accept agreement")),
-          },
-        ]}
-        {...tailFormItemLayout}
-      >
-        <Checkbox>
-          I have read the <a href="">agreement</a>
-        </Checkbox>
-      </Form.Item>
-
+      {isLoading && <div>loading...</div>}
       <Form.Item
         name="signal"
         label="signal"
@@ -410,14 +208,45 @@ const AddSignal = () => {
         ]}
       >
         <Select
-          style={{
-            width: 70,
+          onChange={(value) => {
+            const s = value === undefined ? "" : value;
+            setSelectedSignal(s);
+            if (s === "") {
+              setSelectedSubsignal("");
+            }
+            console.log(s);
           }}
         >
           {signals}
         </Select>
       </Form.Item>
 
+      <Form.Item
+        name="sub_signal"
+        label="sub signal"
+        rules={[
+          {
+            required: true,
+            message: "Please select a sub signal!",
+          },
+        ]}
+      >
+        <Select
+          onChange={(value) => {
+            const s = value === undefined ? "" : value;
+            setSelectedSubsignal(s);
+            console.log(s);
+          }}
+        >
+          {signalsMap[selectedSignal]}
+        </Select>
+      </Form.Item>
+      {selectedSubsignal !== "" && (
+        <OptionalOptions
+          selectedSubsignal={selectedSubsignal}
+          fields={fields}
+        />
+      )}
       <Form.Item {...tailFormItemLayout}>
         <Button type="primary" htmlType="submit">
           Register
